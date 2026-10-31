@@ -1,1 +1,68 @@
+openapi: 3.0.3
+
+info:
+  title: movie ticket API
+  version: 1.0.0
+  description: this is my OpenAPI specification for the service of finding and selecting a seat in my UML diagram
+
+paths:
+  /tickets:
+    get:
+      summary: find a movie ticket
+      parameters:
+        - name: movie
+          in: query
+          required: true
+          description: movie title
+          schema:
+            type: string
+        - name: showtime
+          in: query
+          required: true
+          description: movie showtime
+          schema:
+            type: string
+      responses:
+        "200":
+          description: movie is showing at that time and there are seats available
+        "404":
+          description: movie/showtime isn't found
+    post:
+      summary: select a seat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movie:
+                  type: string
+                showtime:
+                  type: string
+                seat:
+                  type: string
+      responses:
+        "201":
+          description: the seat was available and selected
+        "400":
+          description: seat is not available
+
+  /tickets/{ticket}:
+    delete:
+      summary: cancel ticket
+      parameters:
+        - name: ticket
+          in: path
+          required: true
+          description: ticket number
+          schema:
+            type: string
+      responses:
+        "204":
+          description: ticket was cancelled and refunded
+        "404":
+          description: ticket not found
+        "400":
+          description: incorrect ticket number format
 
